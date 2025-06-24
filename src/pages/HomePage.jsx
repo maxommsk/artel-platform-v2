@@ -9,10 +9,15 @@ import {
   ArrowRight,
   Star
 } from 'lucide-react';
+import PageTitle from '../components/PageTitle';
 
 const HomePage = () => {
   return (
     <div className="min-h-screen">
+       <PageTitle 
+        title="Главная" 
+        description="ЖНК АРТЕЛЬ - современный жилищно-накопительный кооператив. Приобретайте жилье без переплат и кабальных условий ипотеки. Выгодные программы накопления."
+      />
       {/* Hero секция */}
       <section className="gradient-bg text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
