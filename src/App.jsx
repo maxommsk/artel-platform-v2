@@ -5,8 +5,12 @@ import Footer from './components/layout/Footer';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import DashboardLayout from './components/dashboard/DashboardLayout';
 import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+import PropertiesPage from './pages/PropertiesPage';
 import CalculatorPage from './pages/CalculatorPage';
 import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
 import DashboardHome from './pages/dashboard/DashboardHome';
 import './App.css';
 
@@ -19,8 +23,12 @@ function App() {
           <main>
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/properties" element={<PropertiesPage />} />
               <Route path="/calculator" element={<CalculatorPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/dashboard-new" element={<DashboardPage />} />
               <Route 
                 path="/dashboard/*" 
                 element={
