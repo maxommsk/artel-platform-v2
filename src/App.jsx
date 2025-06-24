@@ -3,9 +3,11 @@ import { AuthProvider } from './contexts/AuthContext';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import DashboardLayout from './components/dashboard/DashboardLayout';
 import HomePage from './pages/HomePage';
 import CalculatorPage from './pages/CalculatorPage';
 import LoginPage from './pages/LoginPage';
+import DashboardHome from './pages/dashboard/DashboardHome';
 import './App.css';
 
 function App() {
@@ -23,19 +25,19 @@ function App() {
                 path="/dashboard/*" 
                 element={
                   <ProtectedRoute>
-                    <div className="min-h-screen flex items-center justify-center">
-                      <div className="text-center">
-                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                          Личный кабинет
-                        </h1>
-                        <p className="text-gray-600 dark:text-gray-400">
-                          Добро пожаловать в личный кабинет ЖНК АРТЕЛЬ!
-                        </p>
-                      </div>
-                    </div>
+                    <DashboardLayout />
                   </ProtectedRoute>
                 } 
-              />
+              >
+                <Route index element={<DashboardHome />} />
+                <Route path="profile" element={<div className="p-6"><h1 className="text-2xl font-bold">Профиль пользователя</h1></div>} />
+                <Route path="application" element={<div className="p-6"><h1 className="text-2xl font-bold">Подача заявки</h1></div>} />
+                <Route path="programs" element={<div className="p-6"><h1 className="text-2xl font-bold">Программы накопления</h1></div>} />
+                <Route path="savings" element={<div className="p-6"><h1 className="text-2xl font-bold">Мои накопления</h1></div>} />
+                <Route path="payments" element={<div className="p-6"><h1 className="text-2xl font-bold">Платежи</h1></div>} />
+                <Route path="properties" element={<div className="p-6"><h1 className="text-2xl font-bold">Недвижимость</h1></div>} />
+                <Route path="support" element={<div className="p-6"><h1 className="text-2xl font-bold">Поддержка</h1></div>} />
+              </Route>
             </Routes>
           </main>
           <Footer />
