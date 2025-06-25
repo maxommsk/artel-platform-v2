@@ -65,19 +65,19 @@ const Header = () => {
               <Calculator className="h-4 w-4" />
               <span>Калькулятор</span>
             </Link>
-            <a 
+            <Link 
               to="/about"
               className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               О кооперативе
-            </a>
-            <a 
+            </Link>
+            <Link 
               to="/contact" 
               className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center space-x-1"
             >
               <Phone className="h-4 w-4" />
               <span>Контакты</span>
-            </a>
+            </Link>
           </nav>
 
           {/* Кнопки справа */}
@@ -187,21 +187,21 @@ const Header = () => {
                 <Calculator className="h-4 w-4" />
                 <span>Калькулятор</span>
               </Link>
-              <a 
-                <Link to="/about" 
+              <Link 
+                to="/about" 
                 className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 О кооперативе
-              </a>
-              <a 
-                <Link to="/contact" 
+              </Link>
+              <Link 
+                to="/contact" 
                 className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center space-x-1"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Phone className="h-4 w-4" />
                 <span>Контакты</span>
-              </a>
+              </Link>
               
               {/* Мобильное меню пользователя */}
               {user ? (
