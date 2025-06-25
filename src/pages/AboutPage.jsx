@@ -8,7 +8,8 @@ import {
   Heart,
   Target,
   Clock,
-  Star
+  Star,
+  User
 } from 'lucide-react';
 import PageTitle from '../components/PageTitle';
 
