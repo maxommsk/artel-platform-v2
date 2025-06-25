@@ -66,13 +66,13 @@ const Header = () => {
               <span>Калькулятор</span>
             </Link>
             <a 
-              href="#about" 
+              to="/about"
               className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               О кооперативе
             </a>
             <a 
-              href="#contact" 
+              to="/contact" 
               className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center space-x-1"
             >
               <Phone className="h-4 w-4" />
@@ -188,14 +188,14 @@ const Header = () => {
                 <span>Калькулятор</span>
               </Link>
               <a 
-                href="#about" 
+                <Link to="/about" 
                 className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 О кооперативе
               </a>
               <a 
-                href="#contact" 
+                <Link to="/contact" 
                 className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center space-x-1"
                 onClick={() => setIsMenuOpen(false)}
               >
