@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { Calculator, Home, TrendingUp, DollarSign, Clock, Percent } from 'lucide-react';
+import PageTitle from '../components/PageTitle';
 
 const CalculatorPage = () => {
   const [apartmentCost, setApartmentCost] = useState(5000000);
@@ -94,7 +95,7 @@ const CalculatorPage = () => {
       mortgageOverpayment: Math.round(mortgageOverpayment),
       savings: Math.round(mortgageOverpayment)
     };
-  }, [apartmentCost, initialPayment, selectedPlan]);
+  }, [apartmentCost, initialPayment, selectedPlan, plans]); // <-- ДОБАВЛЕНО: plans
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
