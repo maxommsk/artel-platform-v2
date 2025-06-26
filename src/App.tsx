@@ -2,8 +2,8 @@ import React from 'react'; // Добавлено
 import RegisterPage from './pages/RegisterPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
+import Header from './components/layout/Header'; // Путь изменится автоматически, но убедитесь, что он указывает на .tsx
+import Footer from './components/layout/Footer'; // Путь изменится автоматически, но убедитесь, что он указывает на .tsx
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import DashboardLayout from './components/dashboard/DashboardLayout';
 import HomePage from './pages/HomePage';
