@@ -38,70 +38,23 @@ export const AuthProvider = ({ children }) => {
   // Вход в систему
   const login = async (email, password) => {
     try {
-      // --- Имитация API запроса к серверу для входа ---
-      // В реальном приложении здесь будет fetch/axios запрос к вашему бэкенду, например:
-      // const response = await fetch('/api/auth/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password }),
-      // });
-      // const data = await response.json();
-      // if (!response.ok) {
-      //   throw new Error(data.message || 'Ошибка сервера');
-      // }
-      // return { success: true, user: data.user }; // Сервер возвращает данные пользователя
-
-      // Демо-логика для имитации ответа сервера
-      const response = await new Promise(resolve => setTimeout(() => {
-        const demoUsers = {
-          'client@artel.ru': {
-            id: 1,
-            email: 'client@artel.ru',
-            name: 'Иван Петров',
-            role: 'prospect',
-            avatar: null
-          },
-          'member@artel.ru': {
-            id: 2,
-            email: 'member@artel.ru',
-            name: 'Мария Сидорова',
-            role: 'member_accumulator',
-            avatar: null,
-            savings: 1250000,
-            target: 5000000
-          },
-          'admin@artel.ru': {
-            id: 3,
-            email: 'admin@artel.ru',
-            name: 'Администратор',
-            role: 'admin',
-            avatar: null
-          }
-        };
-
-        const userData = demoUsers[email];
-        if (userData && password === '123456') {
-          resolve({
-            ok: true,
-            json: () => Promise.resolve(userData) // Имитация успешного JSON ответа
-          });
-        } else {
-          resolve({
-            ok: false,
-            status: 401,
-            json: () => Promise.resolve({ message: 'Неверный email или пароль' }) // Имитация ошибки JSON ответа
-          });
-        }
-      }, 1000)); // Имитация задержки сети
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
       const data = await response.json();
 
       if (response.ok) {
-        setUser(data); // data теперь содержит объект пользователя из имитированного ответа
-        localStorage.setItem('artel_user', JSON.stringify(data));
+        // Если вход успешен, сохраняем данные пользователя из ответа API
+        // data.user будет содержать объединенные данные из auth.users и profiles
+        setUser(data.user);
+        localStorage.setItem('artel_user', JSON.stringify(data.user));
         return { success: true };
       } else {
-        throw new Error(data.message || 'Произошла ошибка при входе');
+        // Если API вернуло ошибку
+        throw new Error(data.error || 'Произошла ошибка при входе');
       }
     } catch (error) {
       // Ошибка сети или другая непредвиденная ошибка
@@ -112,43 +65,25 @@ export const AuthProvider = ({ children }) => {
   // Регистрация
   const register = async (userData) => {
     try {
-      // --- Имитация API запроса к серверу для регистрации ---
-      // В реальном приложении здесь будет fetch/axios запрос к вашему бэкенду, например:
-      // const response = await fetch('/api/auth/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(userData), // Отправляем данные для регистрации
-      // });
-      // const data = await response.json();
-      // if (!response.ok) {
-      //   throw new Error(data.message || 'Ошибка сервера');
-      // }
-      // return { success: true, user: data.user }; // Сервер возвращает данные нового пользователя
-
-      // Демо-логика для имитации ответа сервера
-      const response = await new Promise(resolve => setTimeout(() => {
-        const newUser = {
-          id: Date.now(),
-          ...userData,
-          role: 'prospect', // Новые пользователи начинают как потенциальные клиенты
-          avatar: null
-        };
-        resolve({
-          ok: true,
-          json: () => Promise.resolve(newUser) // Имитация успешного JSON ответа
-        });
-      }, 1000)); // Имитация задержки сети
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData), // Отправляем данные для регистрации (email, password, name)
+      });
 
       const data = await response.json();
 
       if (response.ok) {
-        setUser(data);
-        localStorage.setItem('artel_user', JSON.stringify(data));
+        // Если регистрация успешна, сохраняем данные пользователя из ответа API
+        setUser(data.user);
+        localStorage.setItem('artel_user', JSON.stringify(data.user));
         return { success: true };
       } else {
-        throw new Error(data.message || 'Произошла ошибка при регистрации');
+        // Если API вернуло ошибку
+        throw new Error(data.error || 'Произошла ошибка при регистрации');
       }
     } catch (error) {
+      // Ошибка сети или другая непредвиденная ошибка
       return { success: false, error: error.message || 'Произошла ошибка при регистрации' };
     }
   };
