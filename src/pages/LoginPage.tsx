@@ -1,56 +1,56 @@
-import { useState } from 'react';
+import React, { useState } from 'react'; // Добавлено React
 import { useNavigate } from 'react-router-dom';
-import { 
-  Mail, 
-  Lock, 
-  Eye, 
-  EyeOff, 
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
   LogIn
 } from 'lucide-react';
-import PageTitle from '../components/PageTitle';
-import { useAuth } from '../contexts/AuthContext';
+import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
+import { useAuth } from '../contexts/AuthContext'; // Убедитесь, что это импортируется из .tsx
 
-const LoginPage = () => {
+const LoginPage: React.FC = () => { // Изменено
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({ // Типизация выводится автоматически, но можно явно указать: useState<{ email: string; password: string; }>
     email: '',
     password: ''
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState<boolean>(false); // Добавлена типизация
+  const [isLoading, setIsLoading] = useState<boolean>(false); // Добавлена типизация
+  const [error, setError] = useState<string>(''); // Добавлена типизация
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => { // Добавлена типизация
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => { // Добавлена типизация
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
-    const result = await login(formData.email, formData.password); 
+    const result = await login(formData.email, formData.password);
 
     if (result.success) {
       navigate('/dashboard');
     } else {
       setError(result.error || 'Произошла неизвестная ошибка');
     }
-    
+
     setIsLoading(false);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <PageTitle 
-        title="Вход в личный кабинет" 
+      <PageTitle
+        title="Вход в личный кабинет"
         description="Войдите в личный кабинет ЖНК АРТЕЛЬ для управления накоплениями, отслеживания прогресса и получения персональных рекомендаций."
       />
-      
+
       <div className="min-h-screen flex justify-center items-center"> {/* Центрируем содержимое */}
         {/* Форма входа */}
         <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-20 xl:px-24">
