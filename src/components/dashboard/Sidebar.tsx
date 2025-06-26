@@ -1,5 +1,5 @@
-import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { Link, useLocation } from 'react-router-dom'
+import { useAuth, Roles } from '../../contexts/AuthContext'
 import { 
   Home,
   User,
@@ -17,18 +17,29 @@ import {
   BarChart3
 } from 'lucide-react';
 
-const Sidebar = ({ onClose }) => {
-  const { user, roles } = useAuth();
+interface SidebarProps {
+  onClose: () => void
+}
+
+interface MenuItem {
+  path: string
+  icon: React.ElementType
+  label: string
+  roles: (keyof Roles | 'all')[]
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
+  const { user, roles } = useAuth()
   const location = useLocation();
 
   // Меню для разных ролей
   const getMenuItems = () => {
-    const baseItems = [
+    const baseItems: MenuItem[] = [
       { path: '/dashboard', icon: Home, label: 'Главная', roles: ['all'] },
       { path: '/dashboard/profile', icon: User, label: 'Профиль', roles: ['all'] }
     ];
 
-    const roleSpecificItems = [
+    const roleSpecificItems: MenuItem[] = [
       // Потенциальный клиент
       { path: '/dashboard/application', icon: FileText, label: 'Подать заявку', roles: ['prospect'] },
       { path: '/dashboard/programs', icon: Building, label: 'Программы', roles: ['prospect'] },
@@ -55,16 +66,15 @@ const Sidebar = ({ onClose }) => {
       { path: '/dashboard/admin', icon: Settings, label: 'Администрирование', roles: ['admin'] }
     ];
 
-    const supportItems = [
+    const supportItems: MenuItem[] = [
       { path: '/dashboard/support', icon: HelpCircle, label: 'Поддержка', roles: ['all'] }
     ];
 
     // Фильтруем пункты меню по роли пользователя
-    const filterByRole = (items) => {
-      return items.filter(item => 
-        item.roles.includes('all') || item.roles.includes(user?.role)
-      );
-    };
+  const filterByRole = (items: MenuItem[]) => {
+      return items.filter(item =>
+        item.roles.includes('all') || (user ? item.roles.includes(user.role) : false)
+      )
 
     return {
       main: [...baseItems, ...filterByRole(roleSpecificItems)],
@@ -74,14 +84,14 @@ const Sidebar = ({ onClose }) => {
 
   const menuItems = getMenuItems();
 
-  const isActive = (path) => {
+  const isActive = (path: string) => {
     if (path === '/dashboard') {
       return location.pathname === '/dashboard';
     }
     return location.pathname.startsWith(path);
   };
 
-  const MenuItem = ({ item }) => (
+ const MenuItem: React.FC<{ item: MenuItem }> = ({ item }) => (
     <Link
       to={item.path}
       onClick={onClose}
