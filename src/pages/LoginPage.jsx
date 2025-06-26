@@ -7,7 +7,7 @@ import {
   EyeOff, 
   LogIn
 } from 'lucide-react';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/PageTitle.tsx';
 import { useAuth } from '../contexts/AuthContext';
 
 const LoginPage = () => {
