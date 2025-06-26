@@ -95,7 +95,7 @@ const CalculatorPage = () => {
       mortgageOverpayment: Math.round(mortgageOverpayment),
       savings: Math.round(mortgageOverpayment)
     };
-  }, [apartmentCost, initialPayment, selectedPlan]);
+  }, [apartmentCost, initialPayment, selectedPlan, plans]); // <-- ДОБАВЛЕНО: plans
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
