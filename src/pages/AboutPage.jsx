@@ -1,27 +1,53 @@
-import { 
-  Building2, 
-  Users, 
-  Shield, 
-  TrendingUp, 
+import {
+  Building2,
+  Users,
+  Shield,
+  TrendingUp,
   Award, 
   CheckCircle,
   Heart,
   Target,
   Clock,
   Star,
-  User
-} from 'lucide-react';
-import PageTitle from '../components/PageTitle';
+  User,
+} from 'lucide-react'
+import PageTitle from '../components/PageTitle'
 
-const AboutPage = () => {
-  const stats = [
+interface Stat {
+  icon: React.ElementType
+  label: string
+  value: string
+  color: string
+}
+
+interface Advantage {
+  icon: React.ElementType
+  title: string
+  description: string
+}
+
+interface TimelineItem {
+  year: string
+  event: string
+  description: string
+}
+
+interface TeamMember {
+  name: string
+  position: string
+  experience: string
+  description: string
+}
+
+const AboutPage: React.FC = () => {
+  const stats: Stat[] = [
     { icon: Users, label: 'Довольных клиентов', value: '1000+', color: 'blue' },
     { icon: Building2, label: 'Квартир приобретено', value: '500+', color: 'green' },
     { icon: TrendingUp, label: 'Средняя экономия', value: '8 млн ₽', color: 'purple' },
     { icon: Shield, label: 'Лет надежности', value: '15', color: 'yellow' }
   ];
 
-  const advantages = [
+  const advantages: Advantage[] = [
     {
       icon: Shield,
       title: 'Надежность',
@@ -44,14 +70,14 @@ const AboutPage = () => {
     }
   ];
 
-  const timeline = [
+  const timeline: TimelineItem[] = [
     { year: '2009', event: 'Основание кооператива', description: 'Создание ЖНК АРТЕЛЬ' },
     { year: '2012', event: 'Первые 100 квартир', description: 'Достижение важной вехи' },
     { year: '2018', event: 'Лицензия ЦБ РФ', description: 'Получение официального статуса' },
     { year: '2024', event: '1000+ довольных клиентов', description: 'Текущие достижения' }
   ];
 
-  const team = [
+  const team: TeamMember[] = [
     {
       name: 'Александр Петров',
       position: 'Генеральный директор',
