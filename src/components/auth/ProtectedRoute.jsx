@@ -1,9 +1,18 @@
-import { useAuth } from '../../contexts/AuthContext';
-import { Navigate, useLocation } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
+import { ReactElement } from 'react'
+import { Navigate, useLocation } from 'react-router-dom'
+import { Loader2 } from 'lucide-react'
+import { useAuth, Roles } from '../../contexts/AuthContext'
 
-const ProtectedRoute = ({ children, requiredRole = null }) => {
-  const { user, loading, hasRole } = useAuth();
+interface ProtectedRouteProps {
+  children: ReactElement
+  requiredRole?: keyof Roles | null
+}
+
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+  requiredRole = null,
+}) => {
+  const { user, loading, hasRole } = useAuth()
   const location = useLocation();
 
   // Показываем загрузку пока проверяем аутентификацию
