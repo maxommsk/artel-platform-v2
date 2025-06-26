@@ -1,23 +1,58 @@
-import { useAuth } from '../../contexts/AuthContext';
-import { 
-  PiggyBank, 
-  Building, 
-  TrendingUp, 
-  Users, 
+import React from 'react'; // Добавлено React
+import { useAuth, User, Roles } from '../../contexts/AuthContext'; // Импортируем User и Roles из AuthContext.tsx
+import {
+  PiggyBank,
+  Building,
+  TrendingUp,
+  Users,
   Calendar,
   Bell,
   ArrowRight,
   CheckCircle,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  Target, // Добавлено для prospect
+  DollarSign // Добавлено для prospect
 } from 'lucide-react';
 
-const DashboardHome = () => {
+// Интерфейсы для данных
+interface Stat {
+  label: string;
+  value: string;
+  icon: React.ElementType; // Тип для компонента иконки
+  color: string;
+}
+
+interface Action {
+  title: string;
+  description: string;
+  link: string;
+  urgent: boolean;
+}
+
+interface RoleSpecificData {
+  title: string;
+  subtitle: string;
+  stats: Stat[];
+  actions: Action[];
+}
+
+const DashboardHome: React.FC = () => {
   const { user, roles } = useAuth();
 
   // Данные для разных ролей
-  const getRoleSpecificData = () => {
-    switch (user?.role) {
+  const getRoleSpecificData = (): RoleSpecificData => {
+    // Проверяем, что user существует, прежде чем обращаться к user.role
+    if (!user) {
+      return {
+        title: 'Загрузка...',
+        subtitle: 'Пожалуйста, подождите',
+        stats: [],
+        actions: []
+      };
+    }
+
+    switch (user.role) { // user.role теперь гарантированно не null
       case 'prospect':
         return {
           title: 'Добро пожаловать в ЖНК АРТЕЛЬ!',
@@ -34,6 +69,7 @@ const DashboardHome = () => {
         };
 
       case 'member_accumulator':
+      case 'member_owner': // Добавлено member_owner
         return {
           title: `Добро пожаловать, ${user.name}!`,
           subtitle: 'Ваши накопления растут каждый день',
@@ -75,7 +111,11 @@ const DashboardHome = () => {
 
   const data = getRoleSpecificData();
 
-  const StatCard = ({ stat }) => (
+  interface StatCardProps {
+    stat: Stat;
+  }
+
+  const StatCard: React.FC<StatCardProps> = ({ stat }) => (
     <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
       <div className="flex items-center justify-between">
         <div>
@@ -93,7 +133,11 @@ const DashboardHome = () => {
     </div>
   );
 
-  const ActionCard = ({ action }) => (
+  interface ActionCardProps {
+    action: Action;
+  }
+
+  const ActionCard: React.FC<ActionCardProps> = ({ action }) => (
     <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between">
         <div className="flex-1">
@@ -117,7 +161,7 @@ const DashboardHome = () => {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6"> {/* Добавлен p-6 для отступов */}
       {/* Заголовок */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -129,14 +173,16 @@ const DashboardHome = () => {
       </div>
 
       {/* Роль пользователя */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-        <div className="flex items-center space-x-2">
-          <CheckCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-          <span className="text-blue-800 dark:text-blue-300 font-medium">
-            Ваша роль: {roles[user?.role]?.name}
-          </span>
+      {user && ( // Проверяем user, прежде чем использовать его
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+          <div className="flex items-center space-x-2">
+            <CheckCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <span className="text-blue-800 dark:text-blue-300 font-medium">
+              Ваша роль: {roles[user.role]?.name}
+            </span>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Статистика */}
       {data.stats.length > 0 && (
