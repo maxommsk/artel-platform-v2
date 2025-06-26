@@ -11,7 +11,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { useState } from 'react';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/PageTitle.tsx';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
