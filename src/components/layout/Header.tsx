@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'; // Добавлено
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '../ui/button'; // Убедитесь, что это импортируется из .tsx, но без явного указания .tsx
+import { Button } from '../ui/button';
 import { useAuth } from '../../contexts/AuthContext';
 import { Home, Calculator, Phone, Info, KeyRound, User } from 'lucide-react';
 
-const Header: React.FC = () => {
+const Header: React.FC = () => { // Изменено
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
