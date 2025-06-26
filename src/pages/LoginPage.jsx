@@ -240,43 +240,7 @@ const LoginPage = () => {
             </div>
           </div>
         </div>
-
-        {/* Правая часть - демо аккаунты */}
-        <div className="hidden lg:block relative w-0 flex-1">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 flex flex-col justify-center p-12">
-            <div className="text-white">
-              <h3 className="text-2xl font-bold mb-6">Демо аккаунты для тестирования</h3>
-              <p className="text-blue-100 mb-8">
-                Используйте эти аккаунты для ознакомления с функциональностью личного кабинета
-              </p>
-              
-              <div className="space-y-4">
-                {demoAccounts.map((account, index) => {
-                  const Icon = getRoleIcon(account.role);
-                  const color = getRoleColor(account.role);
-                  
-                  return (
-                    <div
-                      key={index}
-                      onClick={() => handleDemoLogin(account)}
-                      className="bg-white/10 backdrop-blur-sm rounded-lg p-4 cursor-pointer hover:bg-white/20 transition-colors"
-                    >
-                      <div className="flex items-center">
-                        <div className={`w-10 h-10 bg-${color}-500 rounded-lg flex items-center justify-center mr-4`}>
-                          <Icon className="h-5 w-5 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="font-semibold">{account.name}</h4>
-                          <p className="text-blue-100 text-sm">{account.description}</p>
-                          <p className="text-blue-200 text-xs mt-1">
-                            {account.email} / {account.password}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+      
 
               <div className="mt-8 p-4 bg-white/10 backdrop-blur-sm rounded-lg">
                 <h4 className="font-semibold mb-2 flex items-center">
