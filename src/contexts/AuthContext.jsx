@@ -38,67 +38,118 @@ export const AuthProvider = ({ children }) => {
   // Вход в систему
   const login = async (email, password) => {
     try {
-      // Имитация API запроса
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Демо пользователи для тестирования
-      const demoUsers = {
-        'client@artel.ru': {
-          id: 1,
-          email: 'client@artel.ru',
-          name: 'Иван Петров',
-          role: 'prospect',
-          avatar: null
-        },
-        'member@artel.ru': {
-          id: 2,
-          email: 'member@artel.ru',
-          name: 'Мария Сидорова',
-          role: 'member_accumulator',
-          avatar: null,
-          savings: 1250000,
-          target: 5000000
-        },
-        'admin@artel.ru': {
-          id: 3,
-          email: 'admin@artel.ru',
-          name: 'Администратор',
-          role: 'admin',
-          avatar: null
-        }
-      };
+      // --- Имитация API запроса к серверу для входа ---
+      // В реальном приложении здесь будет fetch/axios запрос к вашему бэкенду, например:
+      // const response = await fetch('/api/auth/login', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ email, password }),
+      // });
+      // const data = await response.json();
+      // if (!response.ok) {
+      //   throw new Error(data.message || 'Ошибка сервера');
+      // }
+      // return { success: true, user: data.user }; // Сервер возвращает данные пользователя
 
-      const userData = demoUsers[email];
-      if (userData && password === '123456') {
-        setUser(userData);
-        localStorage.setItem('artel_user', JSON.stringify(userData));
+      // Демо-логика для имитации ответа сервера
+      const response = await new Promise(resolve => setTimeout(() => {
+        const demoUsers = {
+          'client@artel.ru': {
+            id: 1,
+            email: 'client@artel.ru',
+            name: 'Иван Петров',
+            role: 'prospect',
+            avatar: null
+          },
+          'member@artel.ru': {
+            id: 2,
+            email: 'member@artel.ru',
+            name: 'Мария Сидорова',
+            role: 'member_accumulator',
+            avatar: null,
+            savings: 1250000,
+            target: 5000000
+          },
+          'admin@artel.ru': {
+            id: 3,
+            email: 'admin@artel.ru',
+            name: 'Администратор',
+            role: 'admin',
+            avatar: null
+          }
+        };
+
+        const userData = demoUsers[email];
+        if (userData && password === '123456') {
+          resolve({
+            ok: true,
+            json: () => Promise.resolve(userData) // Имитация успешного JSON ответа
+          });
+        } else {
+          resolve({
+            ok: false,
+            status: 401,
+            json: () => Promise.resolve({ message: 'Неверный email или пароль' }) // Имитация ошибки JSON ответа
+          });
+        }
+      }, 1000)); // Имитация задержки сети
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setUser(data); // data теперь содержит объект пользователя из имитированного ответа
+        localStorage.setItem('artel_user', JSON.stringify(data));
         return { success: true };
       } else {
-        throw new Error('Неверный email или пароль');
+        throw new Error(data.message || 'Произошла ошибка при входе');
       }
     } catch (error) {
-      return { success: false, error: error.message };
+      // Ошибка сети или другая непредвиденная ошибка
+      return { success: false, error: error.message || 'Произошла ошибка при входе' };
     }
   };
 
   // Регистрация
   const register = async (userData) => {
     try {
-      // Имитация API запроса
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const newUser = {
-        id: Date.now(),
-        ...userData,
-        role: 'prospect', // Новые пользователи начинают как потенциальные клиенты
-        avatar: null
-      };
+      // --- Имитация API запроса к серверу для регистрации ---
+      // В реальном приложении здесь будет fetch/axios запрос к вашему бэкенду, например:
+      // const response = await fetch('/api/auth/register', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(userData), // Отправляем данные для регистрации
+      // });
+      // const data = await response.json();
+      // if (!response.ok) {
+      //   throw new Error(data.message || 'Ошибка сервера');
+      // }
+      // return { success: true, user: data.user }; // Сервер возвращает данные нового пользователя
 
-      setUser(newUser);
-      localStorage.setItem('artel_user', JSON.stringify(newUser));
-      return { success: true };
+      // Демо-логика для имитации ответа сервера
+      const response = await new Promise(resolve => setTimeout(() => {
+        const newUser = {
+          id: Date.now(),
+          ...userData,
+          role: 'prospect', // Новые пользователи начинают как потенциальные клиенты
+          avatar: null
+        };
+        resolve({
+          ok: true,
+          json: () => Promise.resolve(newUser) // Имитация успешного JSON ответа
+        });
+      }, 1000)); // Имитация задержки сети
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setUser(data);
+        localStorage.setItem('artel_user', JSON.stringify(data));
+        return { success: true };
+      } else {
+        throw new Error(data.message || 'Произошла ошибка при регистрации');
+      }
     } catch (error) {
-      return { success: false, error: error.message };
+      return { success: false, error: error.message || 'Произошла ошибка при регистрации' };
     }
   };
 
@@ -110,6 +161,8 @@ export const AuthProvider = ({ children }) => {
 
   // Обновление профиля
   const updateProfile = (updates) => {
+    // В реальном приложении здесь также потребуется API запрос к серверу
+    // Например: fetch('/api/user/profile', { method: 'PUT', body: JSON.stringify(updates) })
     const updatedUser = { ...user, ...updates };
     setUser(updatedUser);
     localStorage.setItem('artel_user', JSON.stringify(updatedUser));
