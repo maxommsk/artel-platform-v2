@@ -62,11 +62,6 @@ const Footer: React.FC = () => { // Изменено
                 </a>
               </li>
               <li>
-                <a href="#properties" className="text-gray-300 hover:text-white transition-colors">
-                  Объекты недвижимости
-                </a>
-              </li>
-              <li>
                 <a href="#contact" className="text-gray-300 hover:text-white transition-colors">
                   Контакты
                 </a>
