@@ -9,7 +9,6 @@ import DashboardLayout from './components/dashboard/DashboardLayout';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
-import PropertiesPage from './pages/PropertiesPage';
 import CalculatorPage from './pages/CalculatorPage';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
@@ -27,7 +26,6 @@ const App: React.FC = () => { // Изменено
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
-              <Route path="/properties" element={<PropertiesPage />} />
               <Route path="/calculator" element={<CalculatorPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
