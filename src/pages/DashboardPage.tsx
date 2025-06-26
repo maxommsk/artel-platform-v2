@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; // Добавлено React
 import { useNavigate } from 'react-router-dom';
-import { 
+import {
   Home,
-  User,
+  User as UserIcon, // Переименовано, чтобы избежать конфликта с интерфейсом User
   Settings,
   LogOut,
   Bell,
@@ -25,25 +25,35 @@ import {
   Menu,
   X
 } from 'lucide-react';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
+import { useAuth, User, Roles } from '../contexts/AuthContext'; // Импортируем User и Roles из AuthContext.tsx
 
-const DashboardPage = () => {
+// Интерфейс для элементов меню
+interface MenuItem {
+  id: string;
+  label: string;
+  icon: React.ElementType; // Тип для компонента иконки
+}
+
+const DashboardPage: React.FC = () => { // Изменено
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('overview');
+  const { user: authUser, logout } = useAuth(); // Получаем пользователя из AuthContext
+  const [user, setUser] = useState<User | null>(null); // Локальное состояние пользователя
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false); // Типизация
+  const [activeTab, setActiveTab] = useState<string>('overview'); // Типизация
 
   useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      setUser(JSON.parse(userData));
+    // Используем пользователя из AuthContext
+    if (authUser) {
+      setUser(authUser);
     } else {
+      // Если пользователя нет в AuthContext, перенаправляем на логин
       navigate('/login');
     }
-  }, [navigate]);
+  }, [authUser, navigate]); // Зависимости useEffect
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
+    logout(); // Используем logout из AuthContext
     navigate('/');
   };
 
@@ -52,31 +62,32 @@ const DashboardPage = () => {
   }
 
   // Меню для разных ролей
-  const getMenuItems = (role) => {
-    const baseItems = [
+  const getMenuItems = (role: keyof Roles): MenuItem[] => { // Типизация
+    const baseItems: MenuItem[] = [
       { id: 'overview', label: 'Главная', icon: Home }
     ];
 
     switch (role) {
-      case 'client':
+      case 'prospect': // Используем 'prospect' вместо 'client'
         return [
           ...baseItems,
           { id: 'programs', label: 'Программы', icon: Target },
           { id: 'calculator', label: 'Калькулятор', icon: BarChart3 },
           { id: 'consultation', label: 'Консультация', icon: Users },
-          { id: 'profile', label: 'Профиль', icon: User }
+          { id: 'profile', label: 'Профиль', icon: UserIcon } // Используем переименованную иконку
         ];
-      
-      case 'member':
+
+      case 'member_accumulator': // Используем 'member_accumulator' вместо 'member'
+      case 'member_owner':
         return [
           ...baseItems,
           { id: 'savings', label: 'Накопления', icon: TrendingUp },
           { id: 'payments', label: 'Платежи', icon: CreditCard },
           { id: 'documents', label: 'Документы', icon: FileText },
           { id: 'properties', label: 'Объекты', icon: Building2 },
-          { id: 'profile', label: 'Профиль', icon: User }
+          { id: 'profile', label: 'Профиль', icon: UserIcon } // Используем переименованную иконку
         ];
-      
+
       case 'admin':
         return [
           ...baseItems,
@@ -85,35 +96,37 @@ const DashboardPage = () => {
           { id: 'finance', label: 'Финансы', icon: DollarSign },
           { id: 'administration', label: 'Администрирование', icon: Settings }
         ];
-      
+
       default:
         return baseItems;
     }
   };
 
   // Контент для разных ролей
-  const renderContent = () => {
+  const renderContent = (): JSX.Element => { // Типизация
     if (activeTab === 'overview') {
       return renderOverview();
     }
-    
+
+    const currentMenuItem = getMenuItems(user.role).find(item => item.id === activeTab);
+
     return (
       <div className="p-6">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-          {getMenuItems(user.role).find(item => item.id === activeTab)?.label}
+          {currentMenuItem?.label}
         </h2>
         <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
           <p className="text-gray-600 dark:text-gray-400">
-            Содержимое раздела "{getMenuItems(user.role).find(item => item.id === activeTab)?.label}" будет добавлено в следующих версиях.
+            Содержимое раздела "{currentMenuItem?.label}" будет добавлено в следующих версиях.
           </p>
         </div>
       </div>
     );
   };
 
-  const renderOverview = () => {
+  const renderOverview = (): JSX.Element => { // Типизация
     switch (user.role) {
-      case 'client':
+      case 'prospect': // Используем 'prospect'
         return (
           <div className="p-6">
             <div className="mb-8">
@@ -138,7 +151,7 @@ const DashboardPage = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
                 <div className="flex items-center">
                   <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
@@ -150,7 +163,7 @@ const DashboardPage = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
                 <div className="flex items-center">
                   <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
@@ -181,7 +194,8 @@ const DashboardPage = () => {
           </div>
         );
 
-      case 'member':
+      case 'member_accumulator': // Используем 'member_accumulator'
+      case 'member_owner':
         return (
           <div className="p-6">
             <div className="mb-8">
@@ -202,11 +216,13 @@ const DashboardPage = () => {
                   </div>
                   <div className="ml-4">
                     <p className="text-sm text-gray-600 dark:text-gray-400">Накоплено</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">2.4 млн ₽</p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {user.savings ? user.savings.toLocaleString() : 'N/A'} ₽
+                    </p>
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
                 <div className="flex items-center">
                   <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
@@ -214,11 +230,13 @@ const DashboardPage = () => {
                   </div>
                   <div className="ml-4">
                     <p className="text-sm text-gray-600 dark:text-gray-400">Цель</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">4.5 млн ₽</p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {user.target ? user.target.toLocaleString() : 'N/A'} ₽
+                    </p>
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
                 <div className="flex items-center">
                   <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
@@ -226,11 +244,13 @@ const DashboardPage = () => {
                   </div>
                   <div className="ml-4">
                     <p className="text-sm text-gray-600 dark:text-gray-400">Прогресс</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">53%</p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {user.savings && user.target ? Math.round((user.savings / user.target) * 100) : '0'}%
+                    </p>
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
                 <div className="flex items-center">
                   <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
@@ -238,7 +258,7 @@ const DashboardPage = () => {
                   </div>
                   <div className="ml-4">
                     <p className="text-sm text-gray-600 dark:text-gray-400">До цели</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">18 мес</p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">N/A</p> {/* Здесь нужна более сложная логика */}
                   </div>
                 </div>
               </div>
@@ -248,11 +268,11 @@ const DashboardPage = () => {
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 mb-8">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Прогресс накопления</h3>
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 mb-4">
-                <div className="bg-gradient-to-r from-blue-500 to-green-500 h-4 rounded-full" style={{width: '53%'}}></div>
+                <div className="bg-gradient-to-r from-blue-500 to-green-500 h-4 rounded-full" style={{width: `${user.savings && user.target ? Math.round((user.savings / user.target) * 100) : 0}%`}}></div>
               </div>
               <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                <span>2.4 млн ₽</span>
-                <span>4.5 млн ₽</span>
+                <span>{user.savings ? user.savings.toLocaleString() : '0'} ₽</span>
+                <span>{user.target ? user.target.toLocaleString() : '0'} ₽</span>
               </div>
             </div>
 
@@ -310,7 +330,7 @@ const DashboardPage = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
                 <div className="flex items-center">
                   <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
@@ -322,7 +342,7 @@ const DashboardPage = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
                 <div className="flex items-center">
                   <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
@@ -334,7 +354,7 @@ const DashboardPage = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
                 <div className="flex items-center">
                   <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
@@ -390,11 +410,11 @@ const DashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <PageTitle 
-        title="Личный кабинет" 
+      <PageTitle
+        title="Личный кабинет"
         description="Личный кабинет ЖНК АРТЕЛЬ - управление накоплениями, отслеживание прогресса, документооборот и персональные рекомендации."
       />
-      
+
       <div className="flex h-screen">
         {/* Sidebar */}
         <div className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}>
@@ -407,7 +427,7 @@ const DashboardPage = () => {
               <X className="h-6 w-6" />
             </button>
           </div>
-          
+
           <div className="flex flex-col h-full">
             <div className="flex-1 px-4 py-6 space-y-2">
               {menuItems.map((item) => (
@@ -425,11 +445,11 @@ const DashboardPage = () => {
                 </button>
               ))}
             </div>
-            
+
             <div className="p-4 border-t border-gray-200 dark:border-gray-700">
               <div className="flex items-center mb-4">
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                  <User className="h-5 w-5 text-white" />
+                  <UserIcon className="h-5 w-5 text-white" /> {/* Используем переименованную иконку */}
                 </div>
                 <div className="ml-3">
                   <p className="text-sm font-medium text-gray-900 dark:text-white">{user.name}</p>
@@ -458,7 +478,7 @@ const DashboardPage = () => {
               >
                 <Menu className="h-6 w-6" />
               </button>
-              
+
               <div className="flex items-center space-x-4">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -468,7 +488,7 @@ const DashboardPage = () => {
                     className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
                   />
                 </div>
-                
+
                 <button className="p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
                   <Bell className="h-5 w-5" />
                 </button>
