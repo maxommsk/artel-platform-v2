@@ -1,14 +1,37 @@
-import { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react'; // Добавлено React
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { Calculator, Home, TrendingUp, DollarSign, Clock, Percent } from 'lucide-react';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
 
-const CalculatorPage = () => {
-  const [apartmentCost, setApartmentCost] = useState(5000000);
-  const [initialPayment, setInitialPayment] = useState(30);
-  const [selectedPlan, setSelectedPlan] = useState('standard');
+// Интерфейс для тарифного плана
+interface Plan {
+  name: string;
+  monthlyRate: number;
+  description: string;
+  color: string;
+}
 
-  const plans = {
+// Интерфейс для коллекции тарифных планов
+interface Plans {
+  standard: Plan;
+  accelerated: Plan;
+  investment: Plan;
+}
+
+// Интерфейс для элемента данных графика
+interface MonthlyDataItem {
+  month: number;
+  amount: number;
+  target: number;
+  progress: number;
+}
+
+const CalculatorPage: React.FC = () => { // Изменено
+  const [apartmentCost, setApartmentCost] = useState<number>(5000000); // Добавлена типизация
+  const [initialPayment, setInitialPayment] = useState<number>(30); // Добавлена типизация
+  const [selectedPlan, setSelectedPlan] = useState<keyof Plans>('standard'); // Добавлена типизация
+
+  const plans: Plans = { // Добавлена типизация
     standard: {
       name: 'Стандарт',
       monthlyRate: 0.5,
@@ -33,9 +56,9 @@ const CalculatorPage = () => {
     const initialAmount = (apartmentCost * initialPayment) / 100;
     const remainingAmount = apartmentCost - initialAmount;
     const monthlyRate = plans[selectedPlan].monthlyRate / 100;
-    
+
     // Расчет накоплений по месяцам
-    const monthlyData = [];
+    const monthlyData: MonthlyDataItem[] = []; // Добавлена типизация
     let currentAmount = initialAmount;
     let monthlyPayment = 0;
     let totalMonths = 0;
@@ -44,13 +67,13 @@ const CalculatorPage = () => {
     for (let payment = 10000; payment <= 200000; payment += 1000) {
       let testAmount = initialAmount;
       let months = 0;
-      
+
       while (testAmount < apartmentCost && months < 300) {
         testAmount += payment;
         testAmount *= (1 + monthlyRate);
         months++;
       }
-      
+
       if (testAmount >= apartmentCost) {
         monthlyPayment = payment;
         totalMonths = months;
@@ -67,7 +90,7 @@ const CalculatorPage = () => {
         target: apartmentCost,
         progress: Math.round((currentAmount / apartmentCost) * 100)
       });
-      
+
       if (month < totalMonths) {
         currentAmount += monthlyPayment;
         currentAmount *= (1 + monthlyRate);
@@ -78,7 +101,7 @@ const CalculatorPage = () => {
     const mortgageRate = 0.16 / 12; // 16% годовых
     const mortgageMonths = 20 * 12; // 20 лет
     const mortgageAmount = apartmentCost - initialAmount;
-    const mortgagePayment = (mortgageAmount * mortgageRate * Math.pow(1 + mortgageRate, mortgageMonths)) / 
+    const mortgagePayment = (mortgageAmount * mortgageRate * Math.pow(1 + mortgageRate, mortgageMonths)) /
                            (Math.pow(1 + mortgageRate, mortgageMonths) - 1);
     const totalMortgagePayment = mortgagePayment * mortgageMonths + initialAmount;
     const mortgageOverpayment = totalMortgagePayment - apartmentCost;
@@ -130,7 +153,7 @@ const CalculatorPage = () => {
                   max="10000000"
                   step="100000"
                   value={apartmentCost}
-                  onChange={(e) => setApartmentCost(Number(e.target.value))}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setApartmentCost(Number(e.target.value))} // Добавлена типизация
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
                 />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
@@ -150,7 +173,7 @@ const CalculatorPage = () => {
                   max="70"
                   step="5"
                   value={initialPayment}
-                  onChange={(e) => setInitialPayment(Number(e.target.value))}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInitialPayment(Number(e.target.value))} // Добавлена типизация
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
                 />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
@@ -173,7 +196,7 @@ const CalculatorPage = () => {
                           ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                           : 'border-gray-200 dark:border-gray-600 hover:border-gray-300'
                       }`}
-                      onClick={() => setSelectedPlan(key)}
+                      onClick={() => setSelectedPlan(key as keyof Plans)} // Добавлена типизация
                     >
                       <div className="flex items-center justify-between mb-1">
                         <span className="font-medium text-gray-900 dark:text-white">
@@ -255,33 +278,33 @@ const CalculatorPage = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={calculations.monthlyData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="month" 
+                    <XAxis
+                      dataKey="month"
                       label={{ value: 'Месяц', position: 'insideBottom', offset: -5 }}
                     />
-                    <YAxis 
-                      tickFormatter={(value) => `${(value / 1000000).toFixed(1)}М`}
+                    <YAxis
+                      tickFormatter={(value: number) => `${(value / 1000000).toFixed(1)}М`} // Добавлена типизация
                       label={{ value: 'Сумма, ₽', angle: -90, position: 'insideLeft' }}
                     />
-                    <Tooltip 
-                      formatter={(value, name) => [
-                        `${value.toLocaleString()} ₽`, 
+                    <Tooltip
+                      formatter={(value: number, name: string) => [ // Добавлена типизация
+                        `${value.toLocaleString()} ₽`,
                         name === 'amount' ? 'Накоплено' : 'Цель'
                       ]}
-                      labelFormatter={(month) => `Месяц: ${month}`}
+                      labelFormatter={(month: number) => `Месяц: ${month}`} // Добавлена типизация
                     />
                     <Legend />
-                    <Line 
-                      type="monotone" 
-                      dataKey="amount" 
+                    <Line
+                      type="monotone"
+                      dataKey="amount"
                       stroke={plans[selectedPlan].color}
                       strokeWidth={3}
                       name="Накоплено"
                     />
-                    <Line 
-                      type="monotone" 
-                      dataKey="target" 
-                      stroke="#ef4444" 
+                    <Line
+                      type="monotone"
+                      dataKey="target"
+                      stroke="#ef4444"
                       strokeDasharray="5 5"
                       name="Цель"
                     />
@@ -317,7 +340,7 @@ const CalculatorPage = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-4">
                   <h4 className="font-semibold text-gray-900 dark:text-white">Ипотека 16%</h4>
                   <div className="space-y-2">
@@ -340,7 +363,7 @@ const CalculatorPage = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="mt-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-green-600 mb-1">
