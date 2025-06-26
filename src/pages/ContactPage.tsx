@@ -1,8 +1,9 @@
-import { 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Clock, 
+import React, { useState } from 'react'; // Добавлено React
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
   MessageCircle,
   Send,
   Building2,
@@ -10,10 +11,9 @@ import {
   Calendar,
   CheckCircle
 } from 'lucide-react';
-import { useState } from 'react';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
 
-const ContactPage = () => {
+const ContactPage: React.FC = () => { // Изменено
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,14 +22,14 @@ const ContactPage = () => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => { // Добавлена типизация для e
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => { // Добавлена типизация для e
     e.preventDefault();
     // Имитация отправки формы
     setIsSubmitted(true);
@@ -72,7 +72,7 @@ const ContactPage = () => {
     {
       city: 'Москва',
       address: 'ул. Тверская, 15, офис 301',
-      phone: '+7 (495 ) 123-45-67',
+      phone: '+7 (495  ) 123-45-67',
       hours: 'Пн-Пт: 9:00-18:00',
       metro: 'м. Тверская'
     },
@@ -113,8 +113,8 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <PageTitle 
-        title="Контакты" 
+      <PageTitle
+        title="Контакты"
         description="Свяжитесь с ЖНК АРТЕЛЬ любым удобным способом. Телефон, email, WhatsApp, офисы в Москве, СПб, Екатеринбурге. Консультации и ответы на вопросы."
       />
       {/* Hero секция */}
@@ -192,7 +192,7 @@ const ContactPage = () => {
               Оставьте сообщение и мы свяжемся с вами в ближайшее время
             </p>
           </div>
-          
+
           {isSubmitted ? (
             <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-8 text-center">
               <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
@@ -312,7 +312,7 @@ const ContactPage = () => {
                     <Phone className="h-5 w-5 text-gray-400 mr-3" />
                     <p className="text-gray-900 dark:text-white">
                       {office.phone}
-                    </p>
+                      </p>
                   </div>
                   <div className="flex items-center">
                     <Clock className="h-5 w-5 text-gray-400 mr-3" />
