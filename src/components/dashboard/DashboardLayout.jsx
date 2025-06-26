@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import { Menu, X } from 'lucide-react';
+import { useState } from 'react'
+import { Outlet } from 'react-router-dom'
+import Sidebar from './Sidebar'
+import { Menu, X } from 'lucide-react'
 
-const DashboardLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+onst DashboardLayout: React.FC = () => {
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
