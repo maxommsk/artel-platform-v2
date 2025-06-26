@@ -11,7 +11,7 @@ import {
   Star,
   User
 } from 'lucide-react';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/PageTitle.tsx';
 
 const AboutPage = () => {
   const stats = [
