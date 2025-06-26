@@ -19,7 +19,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { useState } from 'react';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/PageTitle.tsx';
 
 const PropertiesPage = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
