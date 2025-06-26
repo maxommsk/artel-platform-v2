@@ -5,48 +5,21 @@ import {
   Lock, 
   Eye, 
   EyeOff, 
-  Shield, 
-  Users, 
-  UserCheck,
   LogIn
 } from 'lucide-react';
 import PageTitle from '../components/PageTitle';
-import { useAuth } from '../contexts/AuthContext'; // <-- ИМПОРТИРУЕМ useAuth
+import { useAuth } from '../contexts/AuthContext';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { login } = useAuth(); // <-- ПОЛУЧАЕМ ФУНКЦИЮ login ИЗ КОНТЕКСТА
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(''); // <-- ДОБАВЛЕНО: Состояние для ошибок
-
-  const demoAccounts = [
-    {
-      email: 'client@artel.ru',
-      password: '123456',
-      role: 'prospect', // Изменено на 'prospect' для соответствия AuthContext
-      name: 'Иван Петров',
-      description: 'Потенциальный клиент'
-    },
-    {
-      email: 'member@artel.ru',
-      password: '123456',
-      role: 'member_accumulator', // Изменено на 'member_accumulator'
-      name: 'Анна Сидорова',
-      description: 'Пайщик-накопитель'
-    },
-    {
-      email: 'admin@artel.ru',
-      password: '123456',
-      role: 'admin',
-      name: 'Администратор',
-      description: 'Администратор системы'
-    }
-  ];
+  const [error, setError] = useState('');
 
   const handleInputChange = (e) => {
     setFormData({
@@ -55,46 +28,20 @@ const LoginPage = () => {
     });
   };
 
-  const handleDemoLogin = (account) => {
-    setFormData({
-      email: account.email,
-      password: account.password
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(''); // Сбрасываем ошибки перед новой попыткой
+    setError('');
 
-    // <-- ИСПОЛЬЗУЕМ ФУНКЦИЮ login ИЗ AuthContext
     const result = await login(formData.email, formData.password); 
 
     if (result.success) {
-      navigate('/dashboard'); // Перенаправляем только при успешном входе
+      navigate('/dashboard');
     } else {
-      setError(result.error || 'Произошла неизвестная ошибка'); // Показываем ошибку
+      setError(result.error || 'Произошла неизвестная ошибка');
     }
     
     setIsLoading(false);
-  };
-
-  const getRoleIcon = (role) => {
-    switch (role) {
-      case 'prospect': return Users; // Изменено
-      case 'member_accumulator': return UserCheck; // Изменено
-      case 'admin': return Shield;
-      default: return Users;
-    }
-  };
-
-  const getRoleColor = (role) => {
-    switch (role) {
-      case 'prospect': return 'blue'; // Изменено
-      case 'member_accumulator': return 'green'; // Изменено
-      case 'admin': return 'purple';
-      default: return 'gray';
-    }
   };
 
   return (
@@ -104,8 +51,8 @@ const LoginPage = () => {
         description="Войдите в личный кабинет ЖНК АРТЕЛЬ для управления накоплениями, отслеживания прогресса и получения персональных рекомендаций."
       />
       
-      <div className="min-h-screen flex">
-        {/* Левая часть - форма входа */}
+      <div className="min-h-screen flex justify-center items-center"> {/* Центрируем содержимое */}
+        {/* Форма входа */}
         <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
@@ -176,7 +123,7 @@ const LoginPage = () => {
                   </div>
                 </div>
 
-                {error && ( // <-- ДОБАВЛЕНО: Отображение ошибки
+                {error && (
                   <div className="text-red-500 text-sm text-center">
                     {error}
                   </div>
@@ -229,7 +176,7 @@ const LoginPage = () => {
 
                   <div className="mt-6">
                     <a
-                      href="#"
+                      href="/register"
                       className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                     >
                       Зарегистрироваться
@@ -240,22 +187,7 @@ const LoginPage = () => {
             </div>
           </div>
         </div>
-      
-
-              <div className="mt-8 p-4 bg-white/10 backdrop-blur-sm rounded-lg">
-                <h4 className="font-semibold mb-2 flex items-center">
-                  <Shield className="h-5 w-5 mr-2" />
-                  Безопасность
-                </h4>
-                <p className="text-blue-100 text-sm">
-                  Ваши данные защищены современными методами шифрования. 
-                  Мы используем двухфакторную аутентификацию и регулярно 
-                  проводим аудит безопасности.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Правая часть с демо-аккаунтами полностью удалена */}
       </div>
     </div>
   );
