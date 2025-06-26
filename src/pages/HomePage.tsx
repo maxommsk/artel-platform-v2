@@ -1,21 +1,22 @@
+import React from 'react'; // Добавлено
 import { Link } from 'react-router-dom';
-import { 
-  Calculator, 
-  Shield, 
-  TrendingUp, 
-  Users, 
-  Home, 
+import {
+  Calculator,
+  Shield,
+  TrendingUp,
+  Users,
+  Home,
   CheckCircle,
   ArrowRight,
   Star
 } from 'lucide-react';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
 
-const HomePage = () => {
+const HomePage: React.FC = () => { // Изменено
   return (
     <div className="min-h-screen">
-       <PageTitle 
-        title="Главная" 
+      <PageTitle
+        title="Главная"
         description="ЖНК АРТЕЛЬ - современный жилищно-накопительный кооператив. Приобретайте жилье без переплат и кабальных условий ипотеки. Выгодные программы накопления."
       />
       {/* Hero секция */}
@@ -24,15 +25,15 @@ const HomePage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in-up">
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Ваше жилье без 
+                Ваше жилье без
                 <span className="text-yellow-400"> переплат</span>
               </h1>
               <p className="text-xl mb-8 text-blue-100">
-                ЖНК АРТЕЛЬ поможет вам приобрести квартиру без ипотечных переплат. 
+                ЖНК АРТЕЛЬ поможет вам приобрести квартиру без ипотечных переплат.
                 Накапливайте средства выгодно и получите жилье быстрее!
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link 
+                <Link
                   to="/calculator"
                   className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 px-8 py-4 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2"
                 >
@@ -108,7 +109,7 @@ const HomePage = () => {
               Мы предлагаем честные и выгодные условия для приобретения жилья
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
               <div className="bg-blue-100 dark:bg-blue-900 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
@@ -194,7 +195,7 @@ const HomePage = () => {
           <p className="text-xl text-blue-100 mb-8">
             Рассчитайте свою программу накоплений прямо сейчас
           </p>
-          <Link 
+          <Link
             to="/calculator"
             className="inline-flex items-center space-x-2 bg-yellow-500 hover:bg-yellow-600 text-gray-900 px-8 py-4 rounded-lg font-semibold transition-colors"
           >
