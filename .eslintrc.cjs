@@ -5,23 +5,23 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
-    'plugin:@typescript-eslint/recommended', // Добавляем правила для TypeScript
-    'plugin:jsx-a11y/recommended', // Добавляем правила доступности
-    'plugin:import/errors', // Проверка ошибок импорта
-    'plugin:import/warnings', // Проверка предупреждений импорта
+    'plugin:@typescript-eslint/recommended',
+    'plugin:jsx-a11y/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
-  parser: '@typescript-eslint/parser', // Используем TypeScript парсер
+  parser: '@typescript-eslint/parser',
   parserOptions: { 
     ecmaVersion: 'latest', 
     sourceType: 'module',
     ecmaFeatures: {
-      jsx: true, // Включаем поддержку JSX
+      jsx: true,
     },
   },
   settings: { 
     react: { 
-      version: 'detect' // Автоматически определяет версию React
+      version: 'detect'
     },
     'import/resolver': {
       node: {
@@ -29,16 +29,33 @@ module.exports = {
       },
     },
   },
-  plugins: ['react-refresh', '@typescript-eslint', 'import'], // Добавляем плагины
+  plugins: ['react-refresh', '@typescript-eslint', 'import'],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
     ],
-    'react/prop-types': 'off', // Отключаем проверку prop-types, так как обычно используется TypeScript или она не нужна
-    'no-unused-vars': 'warn', // Предупреждение о неиспользуемых переменных
-    'jsx-a11y/anchor-is-valid': 'off', // Отключаем, если используете Link из react-router-dom и не хотите, чтобы ESLint ругался на отсутствие href
-    '@typescript-eslint/no-unused-vars': 'warn', // Правило для TypeScript о неиспользуемых переменных
-    '@typescript-eslint/no-explicit-any': 'off', // Отключаем, если не хотите ругаться на 'any'
+    'react/prop-types': 'off',
+    'no-unused-vars': 'warn',
+    'jsx-a11y/anchor-is-valid': 'off',
+    '@typescript-eslint/no-unused-vars': 'warn',
+    '@typescript-eslint/no-explicit-any': 'off',
   },
+  // НОВАЯ СЕКЦИЯ: Переопределение для файлов конфигурации Node.js
+  overrides: [
+    {
+      files: ['tailwind.config.js', 'postcss.config.js', 'vite.config.js'], // Укажите все файлы конфигурации, использующие CommonJS
+      env: {
+        node: true, // Указываем, что это среда Node.js
+        browser: false, // Отключаем среду браузера для этих файлов
+      },
+      parserOptions: {
+        sourceType: 'script', // Указываем, что это CommonJS скрипт
+      },
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off', // Отключаем правило, которое ругается на require
+        'no-undef': 'off', // Отключаем проверку на неопределенные глобальные переменные (для require)
+      },
+    },
+  ],
 };
