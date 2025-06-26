@@ -1,3 +1,4 @@
+import RegisterPage from './pages/RegisterPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import Header from './components/layout/Header';
@@ -28,6 +29,7 @@ function App() {
               <Route path="/properties" element={<PropertiesPage />} />
               <Route path="/calculator" element={<CalculatorPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} /> {/* Новый маршрут */}
               <Route path="/dashboard-new" element={<DashboardPage />} />
               <Route 
                 path="/dashboard/*" 
