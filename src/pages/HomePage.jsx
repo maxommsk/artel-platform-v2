@@ -9,7 +9,7 @@ import {
   ArrowRight,
   Star
 } from 'lucide-react';
-import PageTitle from '../components/PageTitle.tsx';
+import PageTitle from '../components/PageTitle';
 
 const HomePage = () => {
   return (
