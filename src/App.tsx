@@ -1,3 +1,4 @@
+import React from 'react'; // Добавлено
 import RegisterPage from './pages/RegisterPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
@@ -15,7 +16,7 @@ import DashboardPage from './pages/DashboardPage';
 import DashboardHome from './pages/dashboard/DashboardHome';
 import './App.css';
 
-function App() {
+const App: React.FC = () => { // Изменено
   return (
     <AuthProvider>
       <Router>
@@ -29,15 +30,15 @@ function App() {
               <Route path="/properties" element={<PropertiesPage />} />
               <Route path="/calculator" element={<CalculatorPage />} />
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} /> {/* Новый маршрут */}
+              <Route path="/register" element={<RegisterPage />} />
               <Route path="/dashboard-new" element={<DashboardPage />} />
-              <Route 
-                path="/dashboard/*" 
+              <Route
+                path="/dashboard/*"
                 element={
                   <ProtectedRoute>
                     <DashboardLayout />
                   </ProtectedRoute>
-                } 
+                }
               >
                 <Route index element={<DashboardHome />} />
                 <Route path="profile" element={<div className="p-6"><h1 className="text-2xl font-bold">Профиль пользователя</h1></div>} />
@@ -55,6 +56,6 @@ function App() {
       </Router>
     </AuthProvider>
   );
-}
+};
 
 export default App;
