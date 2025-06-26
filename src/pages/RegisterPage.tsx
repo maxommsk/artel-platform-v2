@@ -1,29 +1,29 @@
-import { useState } from 'react';
+import React, { useState } from 'react'; // Добавлено React
 import { useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, LogIn } from 'lucide-react';
-import PageTitle from '../components/PageTitle';
-import { useAuth } from '../contexts/AuthContext'; // Импортируем useAuth
+import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
+import { useAuth } from '../contexts/AuthContext'; // Убедитесь, что это импортируется из .tsx
 
-const RegisterPage = () => {
+const RegisterPage: React.FC = () => { // Изменено
   const navigate = useNavigate();
   const { register } = useAuth(); // Получаем функцию register из контекста
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({ // Типизация выводится автоматически, но можно явно указать: useState<{ name: string; email: string; password: string; }>
     name: '',
     email: '',
     password: ''
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState<boolean>(false); // Добавлена типизация
+  const [error, setError] = useState<string>(''); // Добавлена типизация
+  const [successMessage, setSuccessMessage] = useState<string>(''); // Добавлена типизация
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => { // Добавлена типизация
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => { // Добавлена типизация
     e.preventDefault();
     setIsLoading(true);
     setError('');
@@ -40,17 +40,17 @@ const RegisterPage = () => {
     } else {
       setError(result.error || 'Произошла неизвестная ошибка при регистрации.');
     }
-    
+
     setIsLoading(false);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <PageTitle 
-        title="Регистрация" 
+      <PageTitle
+        title="Регистрация"
         description="Создайте новый аккаунт в ЖНК АРТЕЛЬ для доступа ко всем возможностям."
       />
-      
+
       <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
           <div>
