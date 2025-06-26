@@ -1,8 +1,9 @@
-import { 
-  Building2, 
-  MapPin, 
-  Calendar, 
-  Users, 
+import React, { useState } from 'react'; // Добавлено React
+import {
+  Building2,
+  MapPin,
+  Calendar,
+  Users,
   Car,
   Wifi,
   Shield,
@@ -18,15 +19,31 @@ import {
   Star,
   CheckCircle
 } from 'lucide-react';
-import { useState } from 'react';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
 
-const PropertiesPage = () => {
-  const [selectedFilter, setSelectedFilter] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [favorites, setFavorites] = useState([]);
+// Интерфейс для объекта недвижимости
+interface Property {
+  id: number;
+  title: string;
+  location: string;
+  price: string;
+  rooms: string;
+  area: string;
+  floor: string;
+  status: 'available' | 'soon' | 'reserved';
+  image: string;
+  features: string[];
+  description: string;
+  developer: string;
+  completion: string;
+}
 
-  const properties = [
+const PropertiesPage: React.FC = () => { // Изменено
+  const [selectedFilter, setSelectedFilter] = useState<'all' | 'available' | 'soon' | 'reserved'>('all'); // Добавлена типизация
+  const [searchTerm, setSearchTerm] = useState<string>(''); // Добавлена типизация
+  const [favorites, setFavorites] = useState<number[]>([]); // Добавлена типизация
+
+  const properties: Property[] = [ // Добавлена типизация
     {
       id: 1,
       title: 'ЖК "Северная звезда"',
@@ -119,15 +136,15 @@ const PropertiesPage = () => {
     }
   ];
 
-  const toggleFavorite = (propertyId) => {
-    setFavorites(prev => 
-      prev.includes(propertyId) 
+  const toggleFavorite = (propertyId: number) => { // Добавлена типизация
+    setFavorites(prev =>
+      prev.includes(propertyId)
         ? prev.filter(id => id !== propertyId)
         : [...prev, propertyId]
     );
   };
 
-  const getStatusText = (status) => {
+  const getStatusText = (status: 'available' | 'soon' | 'reserved'): string => { // Добавлена типизация
     switch (status) {
       case 'available': return 'Доступно';
       case 'soon': return 'Скоро в продаже';
@@ -136,7 +153,7 @@ const PropertiesPage = () => {
     }
   };
 
-  const getFeatureIcon = (feature) => {
+  const getFeatureIcon = (feature: string) => { // Добавлена типизация
     switch (feature) {
       case 'parking': return Car;
       case 'security': return Shield;
@@ -148,7 +165,7 @@ const PropertiesPage = () => {
     }
   };
 
-  const getFeatureText = (feature) => {
+  const getFeatureText = (feature: string): string => { // Добавлена типизация
     switch (feature) {
       case 'parking': return 'Паркинг';
       case 'security': return 'Охрана';
@@ -163,14 +180,14 @@ const PropertiesPage = () => {
   const filteredProperties = properties.filter(property => {
     const matchesFilter = selectedFilter === 'all' || property.status === selectedFilter;
     const matchesSearch = property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         property.location.toLowerCase().includes(searchTerm.toLowerCase());
+                          property.location.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <PageTitle 
-        title="Объекты недвижимости" 
+      <PageTitle
+        title="Объекты недвижимости"
         description="Каталог проверенных объектов недвижимости от надежных застройщиков. Квартиры в Москве, СПб, Екатеринбурге. Специальные условия для пайщиков ЖНК АРТЕЛЬ."
       />
       {/* Hero секция */}
@@ -212,7 +229,7 @@ const PropertiesPage = () => {
                 type="text"
                 placeholder="Поиск по названию или району..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)} // Добавлена типизация
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             </div>
@@ -229,7 +246,7 @@ const PropertiesPage = () => {
                 ].map(filter => (
                   <button
                     key={filter.key}
-                    onClick={() => setSelectedFilter(filter.key)}
+                    onClick={() => setSelectedFilter(filter.key as 'all' | 'available' | 'soon' | 'reserved')} // Добавлена типизация
                     className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                       selectedFilter === filter.key
                         ? 'bg-blue-600 text-white'
@@ -249,7 +266,7 @@ const PropertiesPage = () => {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProperties.map((property) => (
+            {filteredProperties.map((property: Property) => ( // Добавлена типизация
               <div key={property.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                 {/* Изображение */}
                 <div className="relative h-48 bg-gradient-to-br from-blue-400 to-purple-500">
