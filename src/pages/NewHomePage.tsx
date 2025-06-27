@@ -4,7 +4,7 @@ import { useTier } from '../contexts/TierContext';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import TierSelector from '../components/TierSelector';
+import TierSelector from '../contexts/TierSelector';
 import { 
   ArrowRight, 
   Shield, 
