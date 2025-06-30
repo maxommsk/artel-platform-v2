@@ -1,7 +1,5 @@
 import React from 'react';
-import { cn } from '../../utils/cn';
-import { Loader2 } from 'lucide-react';
-
+import { cn } from "../../lib/utils";import { Loader2 } from 'lucide-react';
 interface PremiumButtonProps extends
   React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'premium' | 'ghost';
