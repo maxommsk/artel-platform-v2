@@ -6,7 +6,7 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import DashboardLayout from './components/dashboard/DashboardLayout';
-import HomePage from './pages/HomePage'; // Оставляем один импорт HomePage
+import PremiumHomePage from './pages/PremiumHomePage'; // Добавить
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import CalculatorPage from './pages/CalculatorPage';
@@ -25,7 +25,7 @@ const App: React.FC = () => {
           <main>
             <Routes>
               {/* Заменяем NewHomePage на HomePage, так как NewHomePage.tsx был удален */}
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<PremiumHomePage />} /> {/* Изменить HomePage на PremiumHomePage */}
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/calculator" element={<CalculatorPage />} />
