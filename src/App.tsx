@@ -1,3 +1,5 @@
+import { TierProvider } from './contexts/TierContext';
+import NewHomePage from './pages/NewHomePage';
 import React from 'react'; // Добавлено
 import RegisterPage from './pages/RegisterPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -16,14 +18,15 @@ import DashboardHome from './pages/dashboard/DashboardHome';
 import './App.css';
 
 const App: React.FC = () => { // Изменено
-  return (
+ return (
+  <TierProvider>
     <AuthProvider>
       <Router>
         <div className="min-h-screen bg-background text-foreground">
           <Header />
           <main>
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<NewHomePage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/calculator" element={<CalculatorPage />} />
@@ -53,7 +56,8 @@ const App: React.FC = () => { // Изменено
         </div>
       </Router>
     </AuthProvider>
-  );
+  </TierProvider>
+);
 };
 
 export default App;

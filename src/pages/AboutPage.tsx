@@ -1,4 +1,4 @@
-import React from 'react'; // Добавлено
+import React from 'react'; // Оставляем этот импорт
 import {
   Building2,
   Users,
@@ -12,17 +12,44 @@ import {
   Star,
   User
 } from 'lucide-react';
-import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
+import PageTitle from '../components/PageTitle';
 
-const AboutPage: React.FC = () => { // Изменено
-  const stats = [
+// Интерфейсы, которые были в удаленной версии
+interface Stat {
+  icon: React.ElementType;
+  label: string;
+  value: string;
+  color: string;
+}
+
+interface Advantage {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}
+
+interface TimelineItem {
+  year: string;
+  event: string;
+  description: string;
+}
+
+interface TeamMember {
+  name: string;
+  position: string;
+  experience: string;
+  description: string;
+}
+
+const AboutPage: React.FC = () => { // Оставляем React.FC
+  const stats: Stat[] = [ // Добавляем аннотацию типа
     { icon: Users, label: 'Довольных клиентов', value: '1000+', color: 'blue' },
     { icon: Building2, label: 'Квартир приобретено', value: '500+', color: 'green' },
     { icon: TrendingUp, label: 'Средняя экономия', value: '8 млн ₽', color: 'purple' },
     { icon: Shield, label: 'Лет надежности', value: '15', color: 'yellow' }
   ];
 
-  const advantages = [
+  const advantages: Advantage[] = [ // Добавляем аннотацию типа
     {
       icon: Shield,
       title: 'Надежность',
@@ -45,14 +72,14 @@ const AboutPage: React.FC = () => { // Изменено
     }
   ];
 
-  const timeline = [
+  const timeline: TimelineItem[] = [ // Добавляем аннотацию типа
     { year: '2009', event: 'Основание кооператива', description: 'Создание ЖНК АРТЕЛЬ' },
     { year: '2012', event: 'Первые 100 квартир', description: 'Достижение важной вехи' },
     { year: '2018', event: 'Лицензия ЦБ РФ', description: 'Получение официального статуса' },
     { year: '2024', event: '1000+ довольных клиентов', description: 'Текущие достижения' }
   ];
 
-  const team = [
+  const team: TeamMember[] = [ // Добавляем аннотацию типа
     {
       name: 'Александр Петров',
       position: 'Генеральный директор',

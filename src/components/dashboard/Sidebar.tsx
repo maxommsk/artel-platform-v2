@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth, Roles } from '../../contexts/AuthContext'
-import { 
+import {
   Home,
   User,
   FileText,
@@ -16,6 +16,7 @@ import {
   Calendar,
   BarChart3
 } from 'lucide-react';
+import React from 'react'; // Добавлен явный импорт React
 
 interface SidebarProps {
   onClose: () => void
@@ -32,6 +33,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
   const { user, roles } = useAuth()
   const location = useLocation();
 
+  // Helper function to filter menu items by user role
+  const filterByRole = (items: MenuItem[]) => {
+    return items.filter(item =>
+      item.roles.includes('all') || (user ? item.roles.includes(user.role) : false)
+    );
+  };
+
   // Меню для разных ролей
   const getMenuItems = () => {
     const baseItems: MenuItem[] = [
@@ -43,23 +51,23 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
       // Потенциальный клиент
       { path: '/dashboard/application', icon: FileText, label: 'Подать заявку', roles: ['prospect'] },
       { path: '/dashboard/programs', icon: Building, label: 'Программы', roles: ['prospect'] },
-      
+
       // Кандидат в пайщики
       { path: '/dashboard/documents', icon: FileText, label: 'Документы', roles: ['candidate', 'member_accumulator', 'member_owner'] },
       { path: '/dashboard/status', icon: Shield, label: 'Статус заявки', roles: ['candidate'] },
-      
+
       // Пайщик-накопитель
       { path: '/dashboard/savings', icon: PiggyBank, label: 'Накопления', roles: ['member_accumulator', 'member_owner'] },
       { path: '/dashboard/payments', icon: CreditCard, label: 'Платежи', roles: ['member_accumulator', 'member_owner'] },
       { path: '/dashboard/properties', icon: Building, label: 'Недвижимость', roles: ['member_accumulator', 'member_owner'] },
-      
+
       // Пайщик-собственник
       { path: '/dashboard/property-management', icon: Settings, label: 'Управление жильем', roles: ['member_owner'] },
-      
+
       // Инвестор
       { path: '/dashboard/investments', icon: TrendingUp, label: 'Инвестиции', roles: ['investor'] },
       { path: '/dashboard/analytics', icon: BarChart3, label: 'Аналитика', roles: ['investor'] },
-      
+
       // Сотрудники и админы
       { path: '/dashboard/clients', icon: Users, label: 'Клиенты', roles: ['staff', 'admin'] },
       { path: '/dashboard/reports', icon: BarChart3, label: 'Отчеты', roles: ['staff', 'admin'] },
@@ -69,12 +77,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
     const supportItems: MenuItem[] = [
       { path: '/dashboard/support', icon: HelpCircle, label: 'Поддержка', roles: ['all'] }
     ];
-
-    // Фильтруем пункты меню по роли пользователя
-  const filterByRole = (items: MenuItem[]) => {
-      return items.filter(item =>
-        item.roles.includes('all') || (user ? item.roles.includes(user.role) : false)
-      )
 
     return {
       main: [...baseItems, ...filterByRole(roleSpecificItems)],
@@ -123,7 +125,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
             <X className="h-5 w-5 text-gray-500" />
           </button>
         </div>
-        
+
         {/* Информация о пользователе */}
         <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
           <div className="flex items-center space-x-3">
