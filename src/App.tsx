@@ -1,14 +1,12 @@
-import { TierProvider } from './contexts/TierContext';
-import NewHomePage from './pages/NewHomePage';
 import React from 'react'; // Добавлено
 import RegisterPage from './pages/RegisterPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
-import Header from './components/layout/Header'; // Путь изменится автоматически, но убедитесь, что он указывает на .tsx
-import Footer from './components/layout/Footer'; // Путь изменится автоматически, но убедитесь, что он указывает на .tsx
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import DashboardLayout from './components/dashboard/DashboardLayout';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/HomePage'; // Оставляем один импорт HomePage
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import CalculatorPage from './pages/CalculatorPage';
@@ -17,16 +15,17 @@ import DashboardPage from './pages/DashboardPage';
 import DashboardHome from './pages/dashboard/DashboardHome';
 import './App.css';
 
-const App: React.FC = () => { // Изменено
- return (
-  <TierProvider>
+const App: React.FC = () => {
+  return (
+    // Удаляем TierProvider, так как TierContext.tsx был удален
     <AuthProvider>
       <Router>
         <div className="min-h-screen bg-background text-foreground">
           <Header />
           <main>
             <Routes>
-              <Route path="/" element={<NewHomePage />} />
+              {/* Заменяем NewHomePage на HomePage, так как NewHomePage.tsx был удален */}
+              <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/calculator" element={<CalculatorPage />} />
@@ -47,7 +46,8 @@ const App: React.FC = () => { // Изменено
                 <Route path="programs" element={<div className="p-6"><h1 className="text-2xl font-bold">Программы накопления</h1></div>} />
                 <Route path="savings" element={<div className="p-6"><h1 className="text-2xl font-bold">Мои накопления</h1></div>} />
                 <Route path="payments" element={<div className="p-6"><h1 className="text-2xl font-bold">Платежи</h1></div>} />
-                <Route path="properties" element={<div className="p-6"><h1 className="text-2xl font-bold">Недвижимость</h1></div>} />
+                {/* Удаляем маршрут "properties", так как PropertiesPage.tsx был удален */}
+                {/* <Route path="properties" element={<div className="p-6"><h1 className="text-2xl font-bold">Недвижимость</h1></div>} /> */}
                 <Route path="support" element={<div className="p-6"><h1 className="text-2xl font-bold">Поддержка</h1></div>} />
               </Route>
             </Routes>
@@ -56,8 +56,7 @@ const App: React.FC = () => { // Изменено
         </div>
       </Router>
     </AuthProvider>
-  </TierProvider>
-);
+  );
 };
 
 export default App;
