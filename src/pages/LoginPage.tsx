@@ -7,7 +7,7 @@ import {
   EyeOff,
   LogIn
 } from 'lucide-react';
-import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
+import PageTitle from '../components/ui/PageTitle'; // Изменено
 import { useAuth } from '../contexts/AuthContext'; // Убедитесь, что это импортируется из .tsx
 
 const LoginPage: React.FC = () => { // Изменено
