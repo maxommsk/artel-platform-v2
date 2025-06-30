@@ -10,7 +10,7 @@ import {
   ArrowRight,
   Star
 } from 'lucide-react';
-import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
+import PageTitle from '../components/ui/PageTitle'; // Изменено
 
 const HomePage: React.FC = () => { // Изменено
   return (
