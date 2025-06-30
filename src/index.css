@@ -2,84 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.75rem;
-  }
+/* Удаляем все @layer base с переменными CSS, так как Tailwind будет использовать цвета из tailwind.config.js */
+/* Удаляем @layer base, который применяет border-border */
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.1%;
-  }
-}
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
 /* Кастомные стили для АРТЕЛЬ */
 .gradient-bg {
-background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%,
-#f59e0b 100%);
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #f59e0b 100%);
 }
 .accent-gradient {
-background: linear-gradient(135deg, #f59e0b 0%, #eab308 100%);
+  background: linear-gradient(135deg, #f59e0b 0%, #eab308 100%);
 }
+
 /* Анимации */
 @keyframes fade-in-up {
-from {
-opacity: 0;
-transform: translateY(30px);
-}
-to {
-opacity: 1;
-transform: translateY(0);
-}
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @keyframes slide-in-right {
-from {
-opacity: 0;
-transform: translateX(30px);
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
-to {
-opacity: 1;
-transform: translateX(0);
-}
-}
+
 .animate-fade-in-up {
-animation: fade-in-up 0.6s ease-out;
+  animation: fade-in-up 0.6s ease-out;
 }
 .animate-slide-in-right {
-animation: slide-in-right 0.6s ease-out;
+  animation: slide-in-right 0.6s ease-out;
 }
