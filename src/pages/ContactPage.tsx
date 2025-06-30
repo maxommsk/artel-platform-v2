@@ -11,7 +11,7 @@ import {
   Calendar,
   CheckCircle
 } from 'lucide-react';
-import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
+import PageTitle from '../components/ui/PageTitle'; // Изменено
 
 const ContactPage: React.FC = () => { // Изменено
   const [formData, setFormData] = useState({

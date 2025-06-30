@@ -19,7 +19,7 @@ import {
   Star,
   CheckCircle
 } from 'lucide-react';
-import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
+import PageTitle from '../components/ui/PageTitle'; // Изменено
 
 // Интерфейс для объекта недвижимости
 interface Property {

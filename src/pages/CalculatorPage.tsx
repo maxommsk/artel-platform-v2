@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react'; // Добавлено React
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { Calculator, Home, TrendingUp, DollarSign, Clock, Percent } from 'lucide-react';
-import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
+import PageTitle from '../components/ui/PageTitle'; // Изменено
 
 // Интерфейс для тарифного плана
 interface Plan {

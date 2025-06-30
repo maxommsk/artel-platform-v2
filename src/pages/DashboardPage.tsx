@@ -25,7 +25,7 @@ import {
   Menu,
   X
 } from 'lucide-react';
-import PageTitle from '../components/PageTitle'; // Убедитесь, что это импортируется из .tsx
+import PageTitle from '../components/ui/PageTitle'; // Изменено
 import { useAuth, User, Roles } from '../contexts/AuthContext'; // Импортируем User и Roles из AuthContext.tsx
 
 // Интерфейс для элементов меню

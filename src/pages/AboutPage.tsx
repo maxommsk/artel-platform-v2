@@ -12,7 +12,7 @@ import {
   Star,
   User
 } from 'lucide-react';
-import PageTitle from '../components/PageTitle';
+import PageTitle from '../components/ui/PageTitle'; // Изменено
 
 // Интерфейсы, которые были в удаленной версии
 interface Stat {
